@@ -1,0 +1,10 @@
+[package]
+name = "voronoi_animation"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+ff-encode = "0.18.4"
+ff-format = "0.18.4"
+rand = "0.8"
+rayon = "1.12.0"
