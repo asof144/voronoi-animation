@@ -1,29 +1,35 @@
-# Real-Time Voronoi Animation
+# Voronoi Animation Engine
 
-A real-time Voronoi visualization tool written in **Rust**. It simulates moving points and generates an animated Voronoi-style visualization, exported as an MP4 video.
+A Voronoi animation engine written in **Rust** that simulates moving points with toroidal boundary conditions and renders the resulting animation to MP4 video.
 
 ## Features
 
-- Animated points with toroidal boundary conditions.
-- Spatial grid for organizing points and checking nearby cells.
-- Video rendering with H.264 encoding using `h264_nvenc`.
-- Configurable resolution, frame rate, and animation duration.
-- Optional debugging counters for measuring cell accesses and nearest-neighbour query performance.
+- **Moving points** with wraparound boundaries.
+- **Spatial grid partitioning** to organize points into cells.
+- **Voronoi visualization** based on nearest-neighbour searches.
+- **MP4 video export** using H.264 encoding with NVIDIA NVENC support.
+- **Configurable parameters**, including resolution, frame rate, and animation duration.
+- **Performance instrumentation** to track cell accesses and nearest-neighbour query costs.
 
 ## Getting Started
 
 ### Prerequisites
 
-- [Rust](https://www.rust-lang.org/tools/install)
-- A compatible NVIDIA GPU and drivers for `h264_nvenc`, if using hardware encoding.
+- [Rust and Cargo](https://www.rust-lang.org/tools/install).
+- FFmpeg with `h264_nvenc` support and a compatible NVIDIA GPU and driver if using hardware encoding.
 
-### Run
+### Installation and Execution
 
-Clone the repository and run the project:
+Clone the repository and navigate to the project directory:
 
 ```bash
-git clone https://github.com/your-username/your-repository.git
-cd your-repository
+git clone https://github.com/asof144/voronoi-animation.git
+cd voronoi-animation
+```
+
+Run the project in release mode:
+
+```bash
 cargo run --release
 ```
 
@@ -31,16 +37,17 @@ The generated animation is saved as `output.mp4`.
 
 ## Performance
 
-The current nearest-neighbour search checks points to determine the closest one. Its worst-case time complexity is **O(N) per query**, where \(N\) is the number of points. Rendering a frame of \(W \times H\) pixels therefore has a worst-case complexity of **O(WHN)** with this search approach.
+The current nearest-neighbour search scans the points to find the closest one, giving a worst-case time complexity of **O(N) per query**, where \(N\) is the number of points.
 
-Optional instrumentation tracks cell accesses to help evaluate and improve performance.
+For an image with width \(W\) and height \(H\), rendering a frame using this search for every pixel has a worst-case time complexity of **O(WHN)**, excluding other processing and encoding costs.
+
+Optional instrumentation helps analyze cell accesses and identify opportunities for optimization.
 
 ## Technologies
 
-- **Rust**
-- **FFmpeg / H.264 NVENC**
-- Spatial partitioning and nearest-neighbour search
+- **FFmpeg / H.264 NVENC** — video encoding.
+- **Spatial partitioning** — grid-based organization of points.
 
 ## License
 
-Add your preferred license here.
+This project is licensed under the MIT License. See [`LICENSE`](LICENSE) for details.
